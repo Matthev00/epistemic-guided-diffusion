@@ -1,0 +1,163 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "diffusion-uncertainty"
+version = "0.0.1"
+description = 'Implementation of "Diffusion Model Guided Sampling with Pixel-Wise Aleatoric Uncertainty Estimation"'
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = "MIT"
+keywords = ["deep-learning", "diffusion", "pytorch", "uncertainty"]
+authors = [
+  { name = "Michele De Vita", email = "michele.de.vita@fau.de" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+  "numpy>=1.24,<2",
+  "omegaconf",
+  "packaging",
+  "pandas>=2,<3",
+  "path",
+  "pillow>=9,<11",
+  "pyyaml",
+  "regex!=2019.12.17",
+  "requests",
+  "scipy>=1.10,<1.14",
+  "tqdm",
+  "urllib3<=2.0.0",
+]
+
+[project.optional-dependencies]
+cu118 = [
+  "accelerate>=0.11.0",
+  "beartype",
+  "click",
+  "compel==0.1.8",
+  "datasets",
+  "diffusers==0.31.0",
+  "einops",
+  "ema-pytorch",
+  "filelock",
+  "gdown==4.6.0",
+  "huggingface-hub>=0.13.2",
+  "invisible-watermark>=0.2.0",
+  "jinja2",
+  "k-diffusion>=0.0.12",
+  "matplotlib<4",
+  "onnx<2",
+  "opencv-python<5",
+  "protobuf>=3.20.3,<4",
+  "pytorch-fid",
+  "pytorch-lightning<3",
+  "safetensors>=0.3.1",
+  "seaborn",
+  "sentencepiece>=0.1.91,!=0.1.92",
+  "tensorboard",
+  "torch==2.3.1",
+  "torch-uncertainty",
+  "torchmetrics[image]<2",
+  "torchsde",
+  "torchsummary",
+  "torchvision==0.18.1",
+  "transformers>=4.25.1,<5",
+  "wandb<1",
+]
+cpu = [
+  "accelerate>=0.11.0",
+  "beartype",
+  "click",
+  "compel==0.1.8",
+  "datasets",
+  "diffusers==0.31.0",
+  "einops",
+  "ema-pytorch",
+  "filelock",
+  "gdown==4.6.0",
+  "huggingface-hub>=0.13.2",
+  "invisible-watermark>=0.2.0",
+  "jinja2",
+  "k-diffusion>=0.0.12",
+  "matplotlib<4",
+  "onnx<2",
+  "opencv-python<5",
+  "protobuf>=3.20.3,<4",
+  "pytorch-fid",
+  "pytorch-lightning<3",
+  "safetensors>=0.3.1",
+  "seaborn",
+  "sentencepiece>=0.1.91,!=0.1.92",
+  "tensorboard",
+  "torch==2.3.1",
+  "torch-uncertainty",
+  "torchmetrics[image]<2",
+  "torchsde",
+  "torchsummary",
+  "torchvision==0.18.1",
+  "transformers>=4.25.1,<5",
+  "wandb<1",
+]
+jax = [
+  "flax>=0.4.1,<0.9",
+  "jax>=0.4.1,<0.5",
+  "jaxlib>=0.4.1,<0.5",
+]
+iddpm = [
+  "blobfile",
+  "mpi4py",
+]
+
+[dependency-groups]
+dev = [
+  "black~=23.1",
+  "hf-doc-builder>=0.3.0",
+  "isort>=5.5.4,<6",
+  "parameterized",
+  "pytest",
+  "pytest-timeout",
+  "pytest-xdist",
+  "requests-mock==1.10.0",
+  "ruff==0.0.280",
+]
+
+[tool.uv]
+default-groups = []
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "cu118" },
+  ],
+]
+required-environments = [
+  "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu118", extra = "cu118", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+  { index = "pytorch-cpu", extra = "cpu" },
+]
+torchvision = [
+  { index = "pytorch-cu118", extra = "cu118", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+  { index = "pytorch-cpu", extra = "cpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["diffusion_uncertainty", "scripts"]
